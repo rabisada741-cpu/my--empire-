@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solo King | Full Empire 2.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #d4af37; --black: #000; --glass: rgba(255, 255, 255, 0.03); }
+        body { margin: 0; background: var(--black); color: white; font-family: 'Poppins', sans-serif; overflow: hidden; height: 100vh; }
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.6; }
+
+        /* १. भव्य लॉगिन स्क्रीन */
+        #login-screen { height: 100vh; display: flex; justify-content: center; align-items: center; background: radial-gradient(circle, #1a1a1a 0%, #000 100%); z-index: 10; position: relative; }
+        .login-box { text-align: center; width: 85%; max-width: 400px; padding: 60px 20px; border: 1px solid rgba(212,175,55,0.3); border-radius: 50px; background: var(--glass); backdrop-filter: blur(20px); box-shadow: 0 0 100px rgba(212,175,55,0.1); }
+        .name-input { width: 80%; padding: 20px; border-radius: 100px; border: 1px solid var(--gold); background: none; color: white; text-align: center; font-size: 1.2rem; margin-top: 40px; outline: none; }
+
+        /* २. असली डैशबोर्ड */
+        #dashboard { display: none; padding: 20px; animation: fadeIn 1.5s ease; text-align: center; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .royal-header h1 { font-family: 'Cinzel Decorative'; color: var(--gold); font-size: 3rem; margin: 20px 0; text-shadow: 0 0 20px var(--gold); }
+        .stat-container { background: linear-gradient(145deg, #0a0a0a, #151515); padding: 50px 20px; border-radius: 40px; border: 1px solid #222; position: relative; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.9); }
+        .stat-container::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--gold); box-shadow: 0 0 100px var(--gold); }
+        .bal-val { font-size: 3.5rem; font-weight: 800; margin: 10px 0; color: #fff; }
+        .bal-val span { color: var(--gold); font-size: 2.5rem; }
+        .btn { background: var(--gold); color: black; border: none; padding: 20px 60px; border-radius: 100px; margin-top: 30px; font-weight: 900; cursor: pointer; box-shadow: 0 10px 30px rgba(212,175,55,0.3); text-transform: uppercase; }
+        .footer-logo { margin-top: 50px; font-size: 10px; color: #333; letter-spacing: 5px; }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div id="login-screen">
+        <div class="login-box">
+            <h1 style="font-family: 'Cinzel Decorative'; color: var(--gold); font-size: 2.5rem;">SOLO KING</h1>
+            <p style="color: #555; font-size: 10px; letter-spacing: 3px;">ROYAL ACCESS ONLY</p>
+            <input type="text" id="uName" class="name-input" placeholder="आफ्नो नाम लेख्नुहोस्">
+            <button onclick="unlock()" class="btn">प्रवेश गर्नुहोस्</button>
+        </div>
+    </div>
+
+    <div id="dashboard">
+        <div class="royal-header">
+            <h1 id="welcome">SOLO KING</h1>
+            <p style="color: #444; font-size: 9px; letter-spacing: 5px;">THE SHARED LEGACY 🔱 2026</p>
+        </div>
+
+        <div class="stat-container">
+            <div style="font-size: 10px; letter-spacing: 5px; color: #555;">CURRENT BALANCE</div>
+            <h1 class="bal-val"><span>$</span><span id="counter">1244.00</span></h1>
+            <p style="color: #d4af37; font-size: 12px; font-weight: bold;">eSewa ID: 9700666557</p>
+        </div>
+
+        <button class="btn" onclick="alert('Ad Loading... Your Dollars are growing!')">🎬 WATCH FULL VIDEO AD</button>
+        <div class="footer-logo">POWERED BY SOLO KING EMPIRE</div>
+    </div>
+
+    <script>
+        // लॉगिन फंक्शन
+        function unlock() {
+            let name = document.getElementById('uName').value;
+            if(name.trim() !== "") {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('welcome').innerText = name.toUpperCase();
+            } else { alert("नाम अनिवार्य छ, सम्राट।"); }
+        }
+
+        // गोल्ड पार्टिकल एनीमेशन
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let particles = [];
+        class P {
+            constructor() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.s = Math.random()*1.5; this.v = Math.random()*0.3; }
+            draw() { ctx.fillStyle = '#d4af37'; ctx.beginPath(); ctx.arc(this.x, this.y, this.s, 0, Math.PI*2); ctx.fill(); }
+            update() { this.y -= this.v; if(this.y < 0) this.y = canvas.height; }
+        }
+        for(let i=0; i<80; i++) particles.push(new P());
+        function anim() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.draw(); p.update();}); requestAnimationFrame(anim); }
+        anim();
+    </script>
+
+    <script src="https://pl28812992.effectivegatecpm.com/30/98/92/309892d8dc53365f2f154f3037485bf5.js"></script>
+
+</body>
+</html>
